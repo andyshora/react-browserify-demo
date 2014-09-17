@@ -2,13 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 
-var literalify = require('literalify'),
-// browserify = require('browserify-middleware'),
-React = require('react'),
+var React = require('react'),
 // This is our React component, shared by server and browser thanks to browserify
 MyApp = require('./scripts/my-app');
 
-var comments = [{author: 'Pete Hunt', text: 'Hey there!'}];
+var comments = [{author: 'Andy Shora', text: 'Hey there!'}];
 
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/scripts', express.static(__dirname + '/scripts'));
@@ -83,25 +81,6 @@ app.get('/', function(req, res) {
 
 });
 
-/*app.get('/bundle.js', browserify('./scripts/my-app.js',
-  { transform: [ literalify.configure, { react: 'window.React' }] ] }
-));*/
-
-/*app.get('/bundle.js', function(req, res) {
-
-  res.setHeader('Content-Type', 'text/javascript')
-
-  browserify('./scripts/my-app.js')
-    .transform(literalify.configure({react: 'window.React'}))
-    .require('./scripts/my-app.js')
-    .bundle()
-    .pipe(res);
-
-});*/
-  
-
-    
-// .transform(literalify.configure({ react: 'window.React' }))
 
 app.get('/comments.json', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
