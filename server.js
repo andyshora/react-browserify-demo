@@ -10,7 +10,7 @@ MyApp = require('./scripts/my-app');
 
 var comments = [{author: 'Pete Hunt', text: 'Hey there!'}];
 
-app.use('/css', express.static(__dirname));
+app.use('/css', express.static(__dirname + '/css'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -41,7 +41,13 @@ app.get('/', function(req, res) {
   // another template engine, or even as a top-level React component itself -
   // but easier here just to construct on the fly
   res.end(
-    // <html>, <head> and <body> are for wusses
+    
+    '<!DOCTYPE html>' +
+    '<html>' +
+    '<head>' +
+    '<title>Hello React</title>' +
+    '<link rel=stylesheet href=css/base.css />' +
+    '<body>' +
 
     // Include our static React-rendered HTML in our content div. This is
     // the same div we render the component to on the client side, and by
@@ -71,7 +77,9 @@ app.get('/', function(req, res) {
     '<script>' +
       'var MyApp = require("./scripts/my-app.js"), container = document.getElementById("content"); ' +
       'React.renderComponent(MyApp(' + safeStringify(props) + '), container)' +
-    '</script>'
+    '</script>' +
+    '</body>' +
+    '</html>'
   );
 
 });
