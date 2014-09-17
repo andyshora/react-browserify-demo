@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var literalify = require('literalify'),
-browserify = require('browserify'),
+// browserify = require('browserify-middleware'),
 React = require('react'),
 // This is our React component, shared by server and browser thanks to browserify
 MyApp = require('./scripts/my-app');
@@ -11,6 +11,7 @@ MyApp = require('./scripts/my-app');
 var comments = [{author: 'Pete Hunt', text: 'Hey there!'}];
 
 app.use('/css', express.static(__dirname + '/css'));
+app.use('/scripts', express.static(__dirname + '/scripts'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -33,9 +34,9 @@ app.get('/', function(req, res) {
   // Now that we've got our data, we can perform the server-side rendering by
   // passing it in as `props` to our React component - and returning an HTML
   // string to be sent to the browser
-  var myAppHtml = React.renderComponentToString(MyApp(props))
+  var myAppHtml = React.renderComponentToString(MyApp(props));
 
-  res.setHeader('Content-Type', 'text/html')
+  res.setHeader('Content-Type', 'text/html');
 
   // Now send our page content - this could obviously be constructed in
   // another template engine, or even as a top-level React component itself -
@@ -59,15 +60,13 @@ app.get('/', function(req, res) {
     // We'll load React from a CDN - you don't have to do this,
     // you can bundle it up or serve it locally if you like
     '<script src=//fb.me/react-0.11.1.min.js></script>' +
-
     '<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>' +
     '<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>' +
-    '<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>' +
 
     // Then the browser will fetch the browserified bundle, which we serve
     // from the endpoint further down. This exposes our component so it can be
     // referenced from the next script block
-    '<script src=/bundle.js></script>' +
+    '<script src=/scripts/_bundle.js></script>' +
 
     // This script renders the component in the browser, referencing it
     // from the browserified bundle, using the same props we used to render
@@ -84,24 +83,25 @@ app.get('/', function(req, res) {
 
 });
 
-app.get('/bundle.js', function(req, res) {
+/*app.get('/bundle.js', browserify('./scripts/my-app.js',
+  { transform: [ literalify.configure, { react: 'window.React' }] ] }
+));*/
+
+/*app.get('/bundle.js', function(req, res) {
 
   res.setHeader('Content-Type', 'text/javascript')
 
-  // Here we invoke browserify to package up our component.
-  // DON'T do it on the fly like this in production - it's very costly -
-  // either compile the bundle ahead of time, or use some smarter middleware
-  // (eg browserify-middleware).
-  // We also use literalify to transform our `require` statements for React
-  // so that it uses the global variable (from the CDN JS file) instead of
-  // bundling it up with everything else
-  browserify()
+  browserify('./scripts/my-app.js')
     .transform(literalify.configure({react: 'window.React'}))
     .require('./scripts/my-app.js')
     .bundle()
-    .pipe(res)
+    .pipe(res);
 
-});
+});*/
+  
+
+    
+// .transform(literalify.configure({ react: 'window.React' }))
 
 app.get('/comments.json', function(req, res) {
   res.setHeader('Content-Type', 'application/json');

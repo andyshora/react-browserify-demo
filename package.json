@@ -9,12 +9,19 @@
     "express": "^4.4.5",
     "literalify": "^0.3.0",
     "react": "^0.11.1",
-    "showdown": "^0.3.1"
+    "showdown": "^0.3.1",
+    "browserify-middleware": "~3.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "~1.2.1",
+    "browserify": "~4.2.3",
+    "watchify": "~1.0.2"
+  },
+  "literalify": { "react": "window.React" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "browserify -r ./scripts/my-app.js -t literalify ./scripts/my-app.js > ./scripts/_bundle.js "
   },
   "repository": {
     "type": "git",
