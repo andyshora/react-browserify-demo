@@ -17,11 +17,13 @@
     "browserify": "~4.2.3",
     "watchify": "~1.0.2"
   },
-  "literalify": { "react": "window.React" },
+  "literalify": {
+    "react": "window.React"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "browserify -r ./scripts/my-app.js -t literalify ./scripts/my-app.js > ./scripts/_bundle.js "
+    "build": "browserify -r ./scripts/my-app.js -t literalify ./scripts/my-app.js > ./scripts/_bundle.js"
   },
   "repository": {
     "type": "git",
