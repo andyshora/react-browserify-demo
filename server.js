@@ -64,7 +64,7 @@ app.get('/', function(req, res) {
     // Then the browser will fetch the browserified bundle, which we serve
     // from the endpoint further down. This exposes our component so it can be
     // referenced from the next script block
-    '<script src=/scripts/_bundle.js></script>' +
+    '<script src=/dist/scripts/_bundle.js></script>' +
 
     // This script renders the component in the browser, referencing it
     // from the browserified bundle, using the same props we used to render

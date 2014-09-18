@@ -14,7 +14,7 @@ var source = require('vinyl-source-stream');
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('js/*.js')
+    return gulp.src('scripts/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -27,14 +27,14 @@ gulp.task('sass', function() {
 });
 
 // Concatenate & Minify JS
-gulp.task('scripts', function() {
-    return gulp.src('js/*.js')
-        .pipe(concat('all.js'))
-        .pipe(gulp.dest('dist'))
-        .pipe(rename('all.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('dist'));
-});
+// gulp.task('scripts', function() {
+//     return gulp.src('js/*.js')
+//         .pipe(concat('all.js'))
+//         .pipe(gulp.dest('dist'))
+//         .pipe(rename('all.min.js'))
+//         .pipe(uglify())
+//         .pipe(gulp.dest('dist'));
+// });
 
 gulp.task('bundle', function() {
     var b = browserify();
@@ -45,15 +45,15 @@ gulp.task('bundle', function() {
     return b.bundle()
       .pipe(source('./scripts/my-app.js'))
       .pipe(rename('_bundle.js'))
-      .pipe(gulp.dest('./scripts'));
+      .pipe(gulp.dest('./dist/scripts'));
 });
 
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('js/*.js', ['lint', 'scripts']);
+    gulp.watch('scripts/*.js', ['bundle']);
     gulp.watch('scss/*.scss', ['sass']);
 });
 
 // Default Task
-gulp.task('default', ['lint', 'sass', 'scripts', 'watch']);
+gulp.task('default', ['lint', 'sass', 'watch']);

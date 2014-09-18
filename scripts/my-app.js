@@ -2,7 +2,7 @@
 
 var React = require('react'),
   DOM = React.DOM,
-  div = DOM.div, button = DOM.button, ul = DOM.ul, li = DOM.li, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, input = DOM.input, form = DOM.form;
+  div = DOM.div, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, input = DOM.input, form = DOM.form;
 
 // This is just a simple example of a component that can be rendered on both
 // the server and browser
