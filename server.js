@@ -1,17 +1,37 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var url = require('url');
 
-var React = require('react'),
+var React = require('react');
+
 // This is our React component, shared by server and browser thanks to browserify
-MyApp = require('./scripts/my-app');
+var MyApp = require('./scripts/my-app');
 
 var comments = [{author: 'Andy Shora', text: 'Hey there!'}];
 
+var ReactRouter = function(req, res, next) {
+
+  try {
+
+    var path = url.parse(req.url).pathname;
+    var app = MyApp({ path: path });
+    var markup = React.renderComponentToString(app);
+    res.send(markup);
+
+  } catch(err) {
+    return next(err);
+  }
+
+};
+
+// static files
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/scripts', express.static(__dirname + '/scripts'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(ReactRouter);
 
 app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/html');
@@ -27,12 +47,14 @@ app.get('/', function(req, res) {
   // here (with some potentially dangerous values for testing), but you could
   // imagine this would be objects typically fetched async from a DB,
   // filesystem or API, depending on the logged-in user, etc.
-  var props = { comments: comments };
+  var props = { comments: comments, path: '/about' };
 
   // Now that we've got our data, we can perform the server-side rendering by
   // passing it in as `props` to our React component - and returning an HTML
   // string to be sent to the browser
   var myAppHtml = React.renderComponentToString(MyApp(props));
+
+
 
   res.setHeader('Content-Type', 'text/html');
 

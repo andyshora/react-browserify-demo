@@ -37,7 +37,8 @@ gulp.task('sass', function() {
 // });
 
 gulp.task('bundle', function() {
-    var b = browserify();
+    var b = browserify({ fullPaths: true });
+
     b.transform(literalify.configure({ react: 'window.React' }));
     b.add('./scripts/my-app.js');
     b.require('./scripts/my-app.js');

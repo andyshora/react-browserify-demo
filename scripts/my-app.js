@@ -1,11 +1,23 @@
 /** @jsx React.DOM */
 
 var React = require('react'),
+  Router = require('react-router-component'),
   DOM = React.DOM,
   div = DOM.div, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, input = DOM.input, form = DOM.form;
 
 // This is just a simple example of a component that can be rendered on both
 // the server and browser
+var Pages = Router.Pages;
+var Page = Router.Page;
+var NotFound = Router.NotFound;
+var Link = require('react-router-component').Link;
+
+/*var App = React.createClass({
+
+  render: function() {
+    return Locations(null, Location({ path: '/', handler: MainPage }), Location({ path: '/about', handler: AboutPage }), NotFound({ handler: NotFoundPage }));
+  }
+});*/
 
 var Comment = React.createClass({
   render: function() {
@@ -19,7 +31,7 @@ var CommentBox = React.createClass({
       url: this.props.url,
       dataType: 'json',
       success: function(data) {
-        this.setState({data: data});
+        this.setState({ data: data });
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -69,7 +81,7 @@ var CommentList = React.createClass({
       return Comment({ author: comment.author, text: comment.text, key: index });
     });
 
-    return div({ className: 'commentList' }, commentNodes);
+    return div({ className: 'commentList' }, commentNodes, Link({ href: '/about' }));
   }
 });
 
@@ -91,6 +103,22 @@ var CommentForm = React.createClass({
   }
 });
 
+var MainPage = React.createClass({
+  render: function() {
+    return CommentBox({ url: 'comments.json', pollInterval: 2000, comments: this.props.comments });
+  }
+});
+var AboutPage = React.createClass({
+  render: function() {
+    CommentBox({ url: 'comments.json', pollInterval: 2000, comments: this.props.comments });
+  }
+});
+var NotFoundPage = React.createClass({
+  render: function() {
+    CommentBox({ url: 'comments.json', pollInterval: 2000, comments: this.props.comments });
+  }
+});
+
 module.exports = React.createClass({
 	// We initialise its state by using the `props` that were passed in when it
   // was first rendered. We also want the button to be disabled until the
@@ -101,20 +129,24 @@ module.exports = React.createClass({
 
   // Once the component has been mounted, we can enable the button
   componentDidMount: function() {
-    this.setState({disabled: false});
+    this.setState({ disabled: false });
   },
 
   // Then we just update the state whenever its clicked - but you could imagine
   // this being updated with the results of AJAX calls, etc
   handleClick: function() {
-    this.setState({items: this.state.items.concat(this.state.items.length)});
+    this.setState({ items: this.state.items.concat(this.state.items.length) });
   },
 
   // For ease of illustration, we just use the React JS methods directly
   // (no JSX compilation needed)
   // Note that we allow the button to be disabled initially, and then enable it
   // when everything has loaded
-  render: function() {
+  /*render: function() {
     return CommentBox({ url: 'comments.json', pollInterval: 2000, comments: this.props.comments });
+  }*/
+
+  render: function() {
+    return Pages(null, Page({ path: '/', handler: MainPage }), Page({ path: '/about', handler: AboutPage }), NotFound({ handler: NotFoundPage }));
   }
 });
