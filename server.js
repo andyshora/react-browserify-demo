@@ -14,6 +14,7 @@ var comments = [{ text: 'cached comments' }];
 
 // static files
 app.use('/css', express.static(__dirname + '/css'));
+app.use('/images', express.static(__dirname + '/images'));
 app.use('/scripts', express.static(__dirname + '/scripts'));
 
 app.use(bodyParser.json());
@@ -52,7 +53,7 @@ app.get('/', function(req, res) {
     '<!DOCTYPE html>' +
     '<html>' +
     '<head>' +
-    '<title>Hello React</title>' +
+    '<title>Confession</title>' +
     '<link rel=stylesheet href=css/base.css />' +
     '<body>' +
 

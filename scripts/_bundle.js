@@ -3,7 +3,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 
 var React = window.React,
   DOM = React.DOM,
-  div = DOM.div, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, p = DOM.p, input = DOM.input, form = DOM.form;
+  div = DOM.div, img = DOM.img, h1 = DOM.h1, p = DOM.p, input = DOM.input, form = DOM.form;
 
 var Comment = React.createClass({
   render: function() {
@@ -57,7 +57,7 @@ var CommentBox = React.createClass({
     setInterval(this.loadCommentsFromServer, this.props.pollInterval);
   },
   render: function() {
-    return div({ className: 'commentBox' }, h1({}, 'Comments Yo!'), CommentList({ data: this.state.data }), CommentForm({ onCommentSubmit: this.handleCommentSubmit }));
+    return div({ className: 'commentBox' }, img({ src: 'images/cage.jpg', className: 'cage' }), h1({}, 'Confession'), CommentList({ data: this.state.data }), CommentForm({ onCommentSubmit: this.handleCommentSubmit }));
   }
 });
 
@@ -85,7 +85,7 @@ var CommentForm = React.createClass({
     return;
   },
   render: function() {
-    return form({ className: 'comment-form', onSubmit: this.handleSubmit }, input({ type: 'text', placeholder: 'Your name', ref: 'author' }), input({ type: 'text', placeholder: 'Say something...', ref: 'text' }), input({ type: 'submit', value: 'post' }));
+    return form({ className: 'comment-form', onSubmit: this.handleSubmit }, input({ type: 'text', placeholder: 'Your name', ref: 'author' }), input({ type: 'text', placeholder: 'Your confession...', ref: 'text' }), input({ type: 'submit', value: 'post' }));
   }
 });
 

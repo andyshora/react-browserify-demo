@@ -1,6 +1,6 @@
 module.exports = {
   poole: {
-    apiKey: '598668db-a425-4988-a6e2-0a730ecd9d4a',
-    apiSecret: '70cc91df-1e0f-411e-9cdb-a433523fa00a'
+    apiKey: 'dc73ffd1-073c-49c0-ab4d-c59cb6b12c83',
+    apiSecret: 'c7a5f38f-d248-49dc-ae9d-b185ea28d4f3'
   }
 };
