@@ -2,28 +2,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var url = require('url');
+var poole = require('poole-client');
 
 var React = require('react');
+var config = require('./config');
 
 // This is our React component, shared by server and browser thanks to browserify
 var MyApp = require('./scripts/my-app');
 
-var comments = [{author: 'Andy Shora', text: 'Hey there!'}];
-
-var ReactRouter = function(req, res, next) {
-
-  try {
-
-    var path = url.parse(req.url).pathname;
-    var app = MyApp({ path: path });
-    var markup = React.renderComponentToString(app);
-    res.send(markup);
-
-  } catch(err) {
-    return next(err);
-  }
-
-};
+var comments = [{ text: 'cached comments' }];
 
 // static files
 app.use('/css', express.static(__dirname + '/css'));
@@ -31,7 +18,6 @@ app.use('/scripts', express.static(__dirname + '/scripts'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(ReactRouter);
 
 app.get('/', function(req, res) {
   res.setHeader('Content-Type', 'text/html');
@@ -47,7 +33,7 @@ app.get('/', function(req, res) {
   // here (with some potentially dangerous values for testing), but you could
   // imagine this would be objects typically fetched async from a DB,
   // filesystem or API, depending on the logged-in user, etc.
-  var props = { comments: comments, path: '/about' };
+  var props = { comments: comments };
 
   // Now that we've got our data, we can perform the server-side rendering by
   // passing it in as `props` to our React component - and returning an HTML
@@ -79,14 +65,14 @@ app.get('/', function(req, res) {
 
     // We'll load React from a CDN - you don't have to do this,
     // you can bundle it up or serve it locally if you like
-    '<script src=//fb.me/react-0.11.1.min.js></script>' +
-    '<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>' +
+    '<script src=//fb.me/react-0.11.1.js></script>' +
+    // '<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>' +
     '<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>' +
 
     // Then the browser will fetch the browserified bundle, which we serve
     // from the endpoint further down. This exposes our component so it can be
     // referenced from the next script block
-    '<script src=/dist/scripts/_bundle.js></script>' +
+    '<script src=/scripts/_bundle.js></script>' +
 
     // This script renders the component in the browser, referencing it
     // from the browserified bundle, using the same props we used to render
@@ -104,17 +90,57 @@ app.get('/', function(req, res) {
 });
 
 
-app.get('/comments.json', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(comments));
+// app.get('/comments.json', function(req, res) {
+//   res.setHeader('Content-Type', 'application/json');
+//   res.send(JSON.stringify(comments));
+// });
+
+// app.post('/comments', function(req, res) {
+//   console.log('posted new comments', req.body);
+//   comments.push(req.body);
+//   res.setHeader('Content-Type', 'application/json');
+//   res.send(JSON.stringify(comments));
+// });
+
+app.get('/comments', function(req, res) {
+  poole.get()
+    .then(function(data) {
+
+      res.setHeader('Content-Type', 'application/json');
+      comments = data;
+      res.send(data);
+
+    }, function(err) {
+      console.log('err', err);
+      res.status(500).send(err);
+    });
+
 });
 
-app.post('/comments.json', function(req, res) {
-  console.log('posted new comments', req.body);
-  comments.push(req.body);
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(comments));
+app.post('/comments', function(req, res) {
+  poole.add(req.body)
+    .then(function(data) {
+      
+      poole.get()
+        .then(function(data) {
+
+          res.setHeader('Content-Type', 'application/json');
+          comments = data;
+          res.send(data);
+
+        }, function(err) {
+          console.log('err', err);
+          res.status(500).send(err);
+        });
+
+    }, function(err) {
+      console.log('err', err);
+      res.status(500).send(err);
+    });
+
 });
+
+poole.init(config.poole.apiKey, config.poole.apiSecret);
 
 app.listen(3000);
 

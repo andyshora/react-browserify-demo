@@ -5,7 +5,7 @@ var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
+// var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 
@@ -46,7 +46,7 @@ gulp.task('bundle', function() {
     return b.bundle()
       .pipe(source('./scripts/my-app.js'))
       .pipe(rename('_bundle.js'))
-      .pipe(gulp.dest('./dist/scripts'));
+      .pipe(gulp.dest('./scripts'));
 });
 
 

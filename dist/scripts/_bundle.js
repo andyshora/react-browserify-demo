@@ -1,12 +1,15 @@
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./scripts/my-app.js":[function(require,module,exports){
+module.exports=require('xj3AAE');
+},{}],"xj3AAE":[function(require,module,exports){
 /** @jsx React.DOM */
 
-var React = require('react'),
+var React = window.React,
   DOM = React.DOM,
-  div = DOM.div, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, p = DOM.p, input = DOM.input, form = DOM.form;
+  div = DOM.div, h1 = DOM.h1, h2 = DOM.h2, span = DOM.span, input = DOM.input, form = DOM.form;
 
 var Comment = React.createClass({
   render: function() {
-    return div({ className: 'comment' }, p({ className: 'comment-author' }, this.props.author), p({}, this.props.text ));
+    return div({ className: 'comment' }, h2({ className: 'commentAuthor' }, this.props.author), span({}, this.props.text ));
   }
 });
 
@@ -40,7 +43,7 @@ var CommentBox = React.createClass({
         type: 'POST',
         data: comment,
         success: function(data) {
-          this.setState({ data: data });
+          this.setState({data: data});
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
@@ -84,7 +87,7 @@ var CommentForm = React.createClass({
     return;
   },
   render: function() {
-    return form({ className: 'comment-form', onSubmit: this.handleSubmit }, input({ type: 'text', placeholder: 'Your name', ref: 'author' }), input({ type: 'text', placeholder: 'Say something...', ref: 'text' }), input({ type: 'submit', value: 'post' }));
+    return form({ className: 'commentForm', onSubmit: this.handleSubmit }, input({ type: 'text', placeholder: 'Your name', ref: 'author' }), input({ type: 'text', placeholder: 'Say something...', ref: 'text' }), input({ type: 'submit', value: 'post' }));
   }
 });
 
@@ -113,7 +116,9 @@ module.exports = React.createClass({
   // Note that we allow the button to be disabled initially, and then enable it
   // when everything has loaded
   render: function() {
-    return CommentBox({ url: 'comments', pollInterval: 20 * 1000, comments: this.props.comments });
+    return div({}, 'yo bitch');
+    // return CommentBox({ url: 'comments.json', pollInterval: 2000, comments: this.props.comments });
   }
 
 });
+},{}]},{},["xj3AAE"])

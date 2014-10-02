@@ -12,7 +12,10 @@
     "showdown": "^0.3.1",
     "browserify-middleware": "~3.0.1",
     "react-async": "~1.0.2",
-    "react-router-component": "~0.20.1"
+    "react-router-component": "~0.20.1",
+    "request": "~2.44.0",
+    "q": "~1.0.1",
+    "poole-client": "~1.0.0"
   },
   "devDependencies": {
     "nodemon": "~1.2.1",

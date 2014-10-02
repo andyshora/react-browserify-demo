@@ -60,3 +60,19 @@ p, ul {
 ul {
   padding-left: 30px;
 }
+
+.comment {
+  margin: 10px 0;
+  border: 1px solid rgb(216, 216, 216);
+  padding: 10px;
+}
+
+.comment-author {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.comment-form > input[type=text] {
+  width: 200px;
+  padding: 10px;
+}
