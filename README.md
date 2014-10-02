@@ -7,6 +7,6 @@ Instructions
 ----
 `npm i` to install dependencies
 
-`npm run build` to bundle up modules using browserify
+`gulp` to bundle up modules using browserify and start watching scripts and styles
 
-`npm start` to run server
+`node server.js` to run server
